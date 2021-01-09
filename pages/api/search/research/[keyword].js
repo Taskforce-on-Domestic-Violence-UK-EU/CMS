@@ -1,5 +1,13 @@
 import dbConnect from "../../../../utils/dbConnect";
 import Article from "../../../../models/article";
+import Cors from "cors";
+
+import runMiddleware from "../../../../utils/runMiddleware";
+
+// Initializing the cors middleware
+const cors = Cors({
+  methods: ["GET", "HEAD"],
+});
 
 export const searchArticles = async (keyword) => {
   const article = await Article.find({
@@ -9,6 +17,8 @@ export const searchArticles = async (keyword) => {
 };
 
 export default async (req, res) => {
+  await runMiddleware(req, res, cors);
+
   const {
     query: { keyword },
     method,
